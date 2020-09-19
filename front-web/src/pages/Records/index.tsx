@@ -8,56 +8,56 @@ import Filters from '../../components/Filters';
 
 import './styles.css';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://big-game-survey.herokuapp.com';
 
 
 const Records: React.FC = () => {
-  const [ recordsResponse, setRecordsResponse ] = useState<RecordsResponse>();
-  const [ activePage, setActivePage ] = useState(0);
+    const [recordsResponse, setRecordsResponse] = useState<RecordsResponse>();
+    const [activePage, setActivePage] = useState(0);
 
-  useEffect(() => {
-    axios.get(`${BASE_URL}/records?linesPerPage=12&page=${activePage}`)
-      .then(response => setRecordsResponse(response.data));
-  }, [activePage]);
+    useEffect(() => {
+        axios.get(`${BASE_URL}/records?linesPerPage=12&page=${activePage}`)
+            .then(response => setRecordsResponse(response.data));
+    }, [activePage]);
 
-  const handlePageChange = (index: number) => {
-      setActivePage(index);
-  }
+    const handlePageChange = (index: number) => {
+        setActivePage(index);
+    }
 
-  return (
-      <div className="page-container">
-          <Filters link="/charts" linkText="VER GRÁFICO" />
-          <table className="records-table" cellPadding="0" cellSpacing="0">
-            <thead>
-                <tr>
-                    <th>INSTANT</th>
-                    <th>NOME</th>
-                    <th>IDADE</th>
-                    <th>PLATAFORMA</th>
-                    <th>GÊNERO</th>
-                    <th>TÍTULO DO GAME</th>
-                </tr>
-            </thead>
-            <tbody>
-                {recordsResponse?.content.map(record => (
-                    <tr key={record.id}>
-                        <td>{formatDate(record.moment)}</td>
-                        <td>{record.name}</td>
-                        <td>{record.age}</td>
-                        <td className="text-secondary">{record.gamePlatform}</td>
-                        <td>{record.genreName}</td>
-                        <td className="text-primary">{record.gameTitle}</td>
+    return (
+        <div className="page-container">
+            <Filters link="/charts" linkText="VER GRÁFICO" />
+            <table className="records-table" cellPadding="0" cellSpacing="0">
+                <thead>
+                    <tr>
+                        <th>INSTANT</th>
+                        <th>NOME</th>
+                        <th>IDADE</th>
+                        <th>PLATAFORMA</th>
+                        <th>GÊNERO</th>
+                        <th>TÍTULO DO GAME</th>
                     </tr>
-                ))}
-            </tbody>
-          </table>
-          <Pagination 
-            activePage={activePage}
-            goToPage={handlePageChange}
-            totalPages={recordsResponse?.totalPages}
-         />
-      </div>
-  );
+                </thead>
+                <tbody>
+                    {recordsResponse?.content.map(record => (
+                        <tr key={record.id}>
+                            <td>{formatDate(record.moment)}</td>
+                            <td>{record.name}</td>
+                            <td>{record.age}</td>
+                            <td className="text-secondary">{record.gamePlatform}</td>
+                            <td>{record.genreName}</td>
+                            <td className="text-primary">{record.gameTitle}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <Pagination
+                activePage={activePage}
+                goToPage={handlePageChange}
+                totalPages={recordsResponse?.totalPages}
+            />
+        </div>
+    );
 }
 
 export default Records;
